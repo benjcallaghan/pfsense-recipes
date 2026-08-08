@@ -2,7 +2,13 @@
 
 With two TrueNAS systems, designate one as the initiator "A" and the other as the listener "B".
 
-## Creating a service account on B
+## Create periodic snapshots on A and B
+
+Create periodic snapshots for all datasets that should be backed up on the opposing system.
+
+## Creating an SSH Connection
+
+Create an SSH key pair on A.
 
 Create a new dataset to hold data from A.
 * Readonly: OFF
@@ -10,15 +16,15 @@ Create a new dataset to hold data from A.
 Create a new local user to act as the service account for A.
 * SSH Access: Checked
 * Disable Password: Checked
-* Public SSH Key: <copied from external system>
+* Public SSH Key: <copied from A>
 * Home Directory: <dataset created earlier>
 * Sudo Commands: none
 
 Change the owner of the A's dataset to A's service account.
 
-## Push backups from A to B
+Create an SSH connection on A with the address of B.
 
-### Configure B to receive backups from A
+## Prepare B to receive backups from A
 
 Required permissions to receive backups pushed by the external system:
 * create - create datasets and child datasets
@@ -30,5 +36,21 @@ Required permissions to receive backups pushed by the external system:
 
 To set these permissions, run the following command in the web shell:
 ```bash
-zfs allow <user> create,destroy,mount,readonly,receive,snapshot <dataset>
+zfs allow <user-a> create,destroy,mount,readonly,receive,snapshot <dataset-a>
 ```
+
+## Push backups from A
+
+Create a new replication task
+* Direction: PUSH
+* Transport: SSH+NETCAT (assumes secure connection already exists)
+* Use Sudo for ZFS Commands: Unchecked
+* SSH Connection: <created earlier>
+* Netcat Active Side: REMOTE
+* Netcat Active Side Min Port: >1024 (non-protected port)
+* Netcat Active Side Max Port: >1024 (non-protected port) (may be same as Min port)
+* Source: <local dataset to send>
+* Destination: <dataset under service account>
+* Destination Dataset Read-only Policy: SET
+* Periodic Snapshot Tasks: <created earlier>
+* Run Automatically: Checked
