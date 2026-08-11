@@ -66,3 +66,29 @@ To set these permissions, run the following command in the web shell:
 ```bash
 zfs allow <user-a> send <dataset-b>
 ```
+
+## Pull backups into A
+
+Create a new replication task
+* Direction: PULL
+* Transport: SSH+NETCAT (assumes secure connection already exists)
+* Use Sudo for ZFS Commands: Unchecked
+* SSH Connection: \<created earlier>
+* Netcat Active Side: REMOTE
+* Netcat Active Side Min Port: >1024 (non-protected port)
+* Netcat Active Side Max Port: >1024 (non-protected port) (may be the same as Min port)
+* Source: \<remove dataset to pull>
+* Destination: \<local dataset>
+* Destination Dataset Read-only Policy: SET
+* Include snapshots with the name: Matching naming schema
+  * Matching naming schema: \<pattern used by B>
+* Run Automatically: Checked
+* Schedule: Checked
+
+## Configure Firewall for B
+
+The firewall for server B must allow/forward ports 22 (SSH) and the replication ports chosen above.
+
+## What about permissions for A?
+
+Server A has the most minimal permissions: none. With this setup, server B does not require any access into server A. No users, datasets, or permissions need to be configured. The firewall for server A can block traffic on all ports.
