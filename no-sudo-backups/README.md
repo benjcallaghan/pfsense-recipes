@@ -54,3 +54,15 @@ Create a new replication task
 * Destination Dataset Read-only Policy: SET
 * Periodic Snapshot Tasks: <created earlier>
 * Run Automatically: Checked
+
+## Prepare B to send backups to A
+
+Required permissions to send backups pulled by the external system:
+* send - initiate outbound data transfer; encrypted datasets are decrypted first
+** send:raw - encrypted datasets are not decrypted; unencrypted datasets sent unmodified
+** send:encrypted - encrypted datasets are not decrypted; unencrypted datasets are forbidden
+
+To set these permissions, run the following command in the web shell:
+```bash
+zfs allow <user-a> send <dataset-b>
+```
