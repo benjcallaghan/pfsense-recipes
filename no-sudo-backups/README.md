@@ -59,8 +59,8 @@ Create a new replication task
 
 Required permissions to send backups pulled by the external system:
 * send - initiate outbound data transfer; encrypted datasets are decrypted first
-** send:raw - encrypted datasets are not decrypted; unencrypted datasets sent unmodified
-** send:encrypted - encrypted datasets are not decrypted; unencrypted datasets are forbidden
+  * send:raw - encrypted datasets are not decrypted; unencrypted datasets sent unmodified
+  * send:encrypted - encrypted datasets are not decrypted; unencrypted datasets are forbidden
 
 To set these permissions, run the following command in the web shell:
 ```bash
