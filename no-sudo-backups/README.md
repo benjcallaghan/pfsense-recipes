@@ -16,8 +16,8 @@ Create a new dataset to hold data from A.
 Create a new local user to act as the service account for A.
 * SSH Access: Checked
 * Disable Password: Checked
-* Public SSH Key: <copied from A>
-* Home Directory: <dataset created earlier>
+* Public SSH Key: \<copied from A>
+* Home Directory: \<dataset created earlier>
 * Sudo Commands: none
 
 Change the owner of the A's dataset to A's service account.
@@ -45,14 +45,14 @@ Create a new replication task
 * Direction: PUSH
 * Transport: SSH+NETCAT (assumes secure connection already exists)
 * Use Sudo for ZFS Commands: Unchecked
-* SSH Connection: <created earlier>
+* SSH Connection: \<created earlier>
 * Netcat Active Side: REMOTE
 * Netcat Active Side Min Port: >1024 (non-protected port)
 * Netcat Active Side Max Port: >1024 (non-protected port) (may be same as Min port)
-* Source: <local dataset to send>
-* Destination: <dataset under service account>
+* Source: \<local dataset to send>
+* Destination: \<dataset under service account>
 * Destination Dataset Read-only Policy: SET
-* Periodic Snapshot Tasks: <created earlier>
+* Periodic Snapshot Tasks: \<created earlier>
 * Run Automatically: Checked
 
 ## Prepare B to send backups to A
